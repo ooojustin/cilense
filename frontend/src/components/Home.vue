@@ -1,5 +1,5 @@
 <template>
-    <div class="flex justify-center h-screen" style="padding-top: 200px;">
+    <div class="flex items-center justify-center h-screen" >
         <CreateRoom />
     </div>
 </template>

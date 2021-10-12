@@ -5,7 +5,7 @@
         </div>
         <input class="bg-gray-800 rounded-md py-2 px-2.5" name="password" v-model="password" type="password" placeholder="Password" />
         <br />
-        <button class="bg-blue-700 rounded-md py-2 mt-3" type="button" @click="onSubmit">
+        <button class="bg-blue-700 rounded-md py-2 mt-3 mb-6" type="button" @click="onSubmit">
             Generate
         </button>
     </div>
@@ -34,7 +34,7 @@ export default {
 <style scoped>
 .create-room {
     width: 600px;
-    height: 180px;
+    margin-bottom: 240px;
 }
 input, 
 button { 
