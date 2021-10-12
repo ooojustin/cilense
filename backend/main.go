@@ -20,6 +20,7 @@ func main() {
 	})
 
 	router.POST("/create_room", controllers.CreateRoom)
+	router.GET("/room/:id", controllers.GetRoom)
 
 	router.Run()
 
