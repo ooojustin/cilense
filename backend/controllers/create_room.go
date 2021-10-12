@@ -8,6 +8,7 @@ import (
 
 func CreateRoom(c *gin.Context) {
 	room := models.Room{}
+	c.BindJSON(&room)
 	config.DB.Create(&room)
 	c.JSON(200, gin.H{"data": room})
 }

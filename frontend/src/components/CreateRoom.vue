@@ -23,7 +23,8 @@ export default {
     },
     methods: {
         onSubmit() {
-            vars.api.post("create_room")
+            const { password } = this;
+            vars.api.post("create_room", { password })
             .then(r => console.log(r.data));
         }
     }
