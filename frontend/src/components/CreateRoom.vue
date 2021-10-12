@@ -3,17 +3,31 @@
         <div class="py-5 text-xl">
             Create Room
         </div>
-        <input class="bg-gray-800 rounded-md py-1 px-2.5" type="text" />
+        <input class="bg-gray-800 rounded-md py-2 px-2.5" name="password" v-model="password" type="password" placeholder="Password" />
         <br />
-        <button class="bg-blue-700 rounded-md py-2 mt-2" type="button">
+        <button class="bg-blue-700 rounded-md py-2 mt-3" type="button" @click="onSubmit">
             Generate
         </button>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+import config from '../config';
+
 export default {
-    name: 'CreateRoom'
+    name: 'CreateRoom',
+    data() {
+        return {
+            password: ""
+        }
+    },
+    methods: {
+        onSubmit() {
+            axios.post(`${config.backend}/create_room`)
+            .then(r => console.log(r.data));
+        }
+    }
 }
 </script>
 
