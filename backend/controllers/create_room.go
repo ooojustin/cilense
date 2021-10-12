@@ -7,7 +7,7 @@ import (
 )
 
 func CreateRoom(c *gin.Context) {
-	room := models.Room{Code: "whatever"}
+	room := models.Room{}
 	config.DB.Create(&room)
 	c.JSON(200, gin.H{"data": room})
 }
