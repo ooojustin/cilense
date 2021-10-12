@@ -3,6 +3,7 @@ package main
 import (
 	"cilense.co/config"
 	"cilense.co/controllers"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 	
@@ -11,15 +12,16 @@ func main() {
 
 	config.InitDatabase()
 
-    r := gin.Default()
+    router := gin.Default()
+	router.Use(cors.Default())
 
-	r.GET("/", func(c *gin.Context) {
+	router.GET("/", func(c *gin.Context) {
         c.String(200, "gin!")
 	})
 
-	r.POST("/create_room", controllers.CreateRoom)
+	router.POST("/create_room", controllers.CreateRoom)
 
-	r.Run()
+	router.Run()
 
 }
 
