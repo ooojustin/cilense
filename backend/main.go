@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"cilense.co/config"
 	"cilense.co/controllers"
 	"github.com/gin-contrib/cors"
@@ -16,7 +18,7 @@ func main() {
 	router.Use(cors.Default())
 
 	router.GET("/", func(c *gin.Context) {
-        c.String(200, "gin!")
+        c.String(http.StatusOK, "gin!")
 	})
 
 	router.POST("/create_room", controllers.CreateRoom)
