@@ -12,8 +12,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-import config from '../config';
+import vars from '../variables';
 
 export default {
     name: 'CreateRoom',
@@ -24,7 +23,7 @@ export default {
     },
     methods: {
         onSubmit() {
-            axios.post(`${config.backend}/create_room`)
+            vars.api.post("create_room")
             .then(r => console.log(r.data));
         }
     }
