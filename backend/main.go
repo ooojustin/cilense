@@ -10,10 +10,6 @@ func main() {
         c.String(200, "gin!")
 	})
 
-    r.GET("/ws", func(c *gin.Context) {
-        wshandler(c.Writer, c.Request)
-    })
-
 	r.Run()
 
 }
