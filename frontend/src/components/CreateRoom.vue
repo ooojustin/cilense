@@ -25,21 +25,27 @@ export default {
         onSubmit() {
             const { password } = this;
             vars.api.post("create_room", { password })
-            .then(r => console.log(r.data));
+            .then(r => {
+                const { data } = r.data;
+                this.$emit("room-created", data);
+            });
         }
     }
 }
 </script>
 
 <style scoped>
+
 .create-room {
     width: 600px;
     margin-bottom: 240px;
 }
+
 input, 
 button { 
     width: 450px; 
 }
+
 @media (max-width:500px) {
     input, 
     button,
@@ -47,4 +53,5 @@ button {
         width: 90% !important; 
     }
 }
+
 </style>
