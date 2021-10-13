@@ -10,10 +10,21 @@
 import vars from "../variables";
 import Message from "./Message";
 
+import { 
+    initWebSocket,
+    joinRoom
+} from '../websocket';
+
 export default {
     name: 'Room',
     components: {
         Message
+    },
+    methods: {
+        handleMessage(msg) {
+            // handle message from websocket
+            console.log(msg);
+        }
     },
     data() {
         return {
@@ -29,22 +40,12 @@ export default {
             this.room = data;
         });
 
-        const url = "ws" + vars.backend.slice(4) + "ws";
-        let ws = new WebSocket(url);
-
-        ws.onmessage = msg => {
-            console.log(msg);
+        const onOpen = () => {
+            console.log("Connected to websocket.");
+            joinRoom(id);
         }
 
-        ws.onopen = () => {
-            const params = {
-                action: "join_room",
-                data: {
-                    room_id: id
-                }
-            };
-            ws.send(JSON.stringify(params));
-        }
+        initWebSocket(onOpen, this.handleMessage);
 
     }
 }

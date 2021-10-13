@@ -44,9 +44,8 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 	
 		data := sa.Data.(map[string]interface{})
 		switch sa.Action {
-		case "join_room":
-			roomID := data["room_id"]
-			fmt.Println("user joining room", roomID)
+		case "join_room": JoinRoom(data)
+		case "send_message": SendMessage(data)
 		default:
 			fmt.Println("Unhandled action:", sa.Action)
 		}
