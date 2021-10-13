@@ -9,9 +9,16 @@ import (
 )
 
 func GetRoom(c *gin.Context) {
+
+	// find room from database using id
 	id := c.Param("id")
 	var room models.Room
 	config.DB.Table("rooms").Where("id = ?", id).First(&room)
-	room.Password = "" // hide password from basic retrieval
+
+	// hide pw and api token from response
+	room.Password = ""
+	room.Token = ""
+
 	c.JSON(http.StatusOK, gin.H{"data": room})
+
 }
