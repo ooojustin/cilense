@@ -51,7 +51,7 @@ export default {
         initWebSocket(onOpen, this.handleMessage);
 
         const tokens = JSON.parse(localStorage.getItem("tokens")) || {};
-        if (tokens.hasOwnProperty(id)) {
+        if (Object.prototype.hasOwnProperty.call(tokens, id)) {
             // password is stored in local storage?
             const token = tokens[id];
             console.log("room token:", token);
