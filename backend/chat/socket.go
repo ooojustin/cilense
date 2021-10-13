@@ -22,7 +22,9 @@ type SocketAction struct {
 	Data interface{} `json:"data"`
 }
 
-type SessionInfo struct {
+type SocketSession struct {
+	Connection *websocket.Conn `json:"-"`
+	RoomID string `json:"room_id"`
 	IsOwner bool `json:"is_owner"`
 }
 
@@ -34,9 +36,9 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var si *SessionInfo
-	si = new(SessionInfo)
-	si.IsOwner = false
+	var ss *SocketSession
+	ss = new(SocketSession)
+	ss.Connection = conn
 
 	for {
 
@@ -56,8 +58,8 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 		// execute action on client data to determine response
 		var response gin.H
 		switch sa.Action {
-		case "join_room": JoinRoom(data, &response)
-		case "send_message": SendMessage(data, &response)
+		case "join_room": JoinRoom(data, ss, &response)
+		case "send_message": SendMessage(data, ss, &response)
 		default:
 			fmt.Println("Unhandled action:", sa.Action)
 		}

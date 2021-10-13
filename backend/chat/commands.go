@@ -6,14 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func JoinRoom(data gin.H, response *gin.H) {
+func JoinRoom(data gin.H, ss *SocketSession, res *gin.H) {
 	roomID := data["room_id"]
+	ss.RoomID = roomID.(string)
 	fmt.Println("user joining room", roomID)
-	*response = map[string]interface{} {}
+	*res = map[string]interface{} {}
 }
 
-func SendMessage(data gin.H, response *gin.H) {
+func SendMessage(data gin.H, ss *SocketSession, res *gin.H) {
 	message := data["message"]
 	fmt.Println("user sending message:", message)
-	*response = map[string]interface{} {}
+	*res = map[string]interface{} {}
 }
