@@ -17,7 +17,7 @@ export const initWebSocket = (onopen, onmessage) => {
         // convert message to object before passing to handler
         const datastr = unescape(msg.data);
         const data = JSON.parse(datastr);
-        onmessage(data);
+        data && onmessage(data);
     };
 
 }

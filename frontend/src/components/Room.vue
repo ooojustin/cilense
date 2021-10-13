@@ -25,8 +25,27 @@ export default {
     },
     methods: {
         handleMessage(msg) {
-            // handle message from websocket
-            console.log(msg);
+
+            // handle messages from the websocket
+            // check if response has a 'type', for processing
+            let type = null;
+            if (Object.prototype.hasOwnProperty.call(msg, "type"))
+                type = msg.type;
+
+            // skip message if no type is specified
+            if (!type)
+                return;
+
+            switch (type) {
+                case "room_joined": {
+                    // store session inside local storage
+                    const sessions = JSON.parse(localStorage.getItem("sessions")) || {};
+                    sessions[this.room.id] = msg.session_id;
+                    localStorage.setItem("sessions", JSON.stringify(sessions));
+                    break;
+                }
+            }
+
         }
     },
     data() {
