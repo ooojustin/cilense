@@ -33,6 +33,7 @@ export default {
     },
     created() {
 
+        // load room data into local state
         const { id } = this.$route.params;
         vars.api.get("/room/" + id)
         .then(r => {
@@ -40,12 +41,21 @@ export default {
             this.room = data;
         });
 
+        // func will when websocket connect is opened
         const onOpen = () => {
             console.log("Connected to websocket.");
             joinRoom(id);
         }
 
+        // initializie web socket connection
         initWebSocket(onOpen, this.handleMessage);
+
+        const creds = JSON.parse(localStorage.getItem("creds")) || {};
+        if (creds.hasOwnProperty(id)) {
+            // password is stored in local storage?
+            const password = creds[id];
+            console.log("room password:", password);
+        }
 
     }
 }

@@ -28,7 +28,13 @@ export default {
             .then(r => {
                 const { data } = r.data;
                 this.$emit("room-created", data);
+                this.storePass(data);
             });
+        },
+        storePass(room) {
+            const creds = JSON.parse(localStorage.getItem("creds")) || {};
+            creds[room.id] = this.password;
+            localStorage.setItem("creds", JSON.stringify(creds));
         }
     }
 }
