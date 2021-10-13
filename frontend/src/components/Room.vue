@@ -1,13 +1,20 @@
 <template>
-    <div>
-        {{ room }}
+    <div class="flex items-center justify-center h-screen">
+        <div class="chat-container bg-gray-700 rounded-md p-5 border border-gray-500" style="height: 60%;">
+            <Message text="test message" />
+        </div>
     </div>
 </template>
 
 <script>
 import vars from "../variables";
+import Message from "./Message";
+
 export default {
     name: 'Room',
+    components: {
+        Message
+    },
     data() {
         return {
             room: null
@@ -24,11 +31,17 @@ export default {
 
         const url = "ws" + vars.backend.slice(4) + "ws";
         let ws = new WebSocket(url);
+
         ws.onmessage = msg => {
             console.log(msg);
         }
+
         ws.onopen = () => {
-            setTimeout(() => ws.send("ping"), 1000);
+            const params = {
+                action: "join_room",
+                room_id: id
+            };
+            ws.send(JSON.stringify(params));
         }
 
     }
@@ -36,4 +49,15 @@ export default {
 </script>
 
 <style scoped>
+
+.chat-container {
+    width: 60%;
+}
+
+@media (max-width:500px) {
+    .chat-container {
+        width: 90% !important;
+    }
+}
+
 </style>
