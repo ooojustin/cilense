@@ -22,6 +22,13 @@ export const initWebSocket = (onopen, onmessage) => {
 
 }
 
+export const restoreSession = session_id => {
+    send({
+        action: "restore_session",
+        data: { session_id }
+    });
+}
+
 export const joinRoom = room_id => {
     send({
         action: "join_room",

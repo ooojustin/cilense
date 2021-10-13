@@ -33,6 +33,10 @@ func Authenticate(data gin.H, res *gin.H, ss *SocketSession) {
 	room := controllers.GetRoomFromID(ss.RoomID)
 	if room.Token == data["token"] {
 		ss.IsOwner = true
+		if !ss.Model.IsOwner {
+			ss.Model.IsOwner = true
+			config.DB.Save(&ss.Model)
+		}
 	}
 	*res = gin.H{
 		"success": ss.IsOwner,

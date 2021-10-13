@@ -12,6 +12,7 @@ import Message from "./Message";
 
 import { 
     initWebSocket,
+    restoreSession,
     joinRoom,
     sendMessage,
     authenticate
@@ -30,7 +31,9 @@ export default {
     },
     data() {
         return {
-            room: null
+            room: null,
+            token: null,
+            session: null
         };
     },
     created() {
@@ -43,17 +46,22 @@ export default {
             this.room = data;
         });
 
-        // retrieve token for room from local storage, if it exists
-        let token = null;
+        // retrieve room token from local storage
         const tokens = JSON.parse(localStorage.getItem("tokens")) || {};
         if (Object.prototype.hasOwnProperty.call(tokens, id))
-            token = tokens[id];
+            this.token = tokens[id];
+
+        // retrieve stored session from local storage
+        const sessions = JSON.parse(localStorage.getItem("sessions")) || {};
+        if (Object.prototype.hasOwnProperty.call(sessions, id))
+            this.session = sessions[id];
 
         // func will when websocket connect is opened
         const onOpen = () => {
             console.log("Connected to websocket.");
-            joinRoom(id);
-            token && authenticate(token);
+            this.session && restoreSession(this.session);
+            this.session || joinRoom(id);
+            this.token && authenticate(this.token);
             sendMessage("hello");
         }
 
