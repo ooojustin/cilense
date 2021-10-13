@@ -50,11 +50,11 @@ export default {
         // initializie web socket connection
         initWebSocket(onOpen, this.handleMessage);
 
-        const creds = JSON.parse(localStorage.getItem("creds")) || {};
-        if (creds.hasOwnProperty(id)) {
+        const tokens = JSON.parse(localStorage.getItem("tokens")) || {};
+        if (tokens.hasOwnProperty(id)) {
             // password is stored in local storage?
-            const password = creds[id];
-            console.log("room password:", password);
+            const token = tokens[id];
+            console.log("room token:", token);
         }
 
     }
