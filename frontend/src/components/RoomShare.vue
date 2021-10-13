@@ -12,7 +12,7 @@
             Copy URL
         </button>
         <br />
-        <button class="bg-blue-700 hover:bg-blue-500 rounded-md py-2 mb-6" type="button" @click="onSubmit">
+        <button class="bg-blue-700 hover:bg-blue-500 rounded-md py-2 mb-6" type="button" @click="onOpen">
             Open Room
         </button>
     </div>
@@ -42,6 +42,9 @@ export default {
             input.select();
             document.execCommand("copy");
             this.copied = true;
+        },
+        onOpen() {
+            this.$router.push(`/c/${this.room.id}`);
         }
     }
 }
