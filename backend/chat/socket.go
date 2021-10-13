@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	uuid "github.com/satori/go.uuid"
 )
 
 var upgrader = websocket.Upgrader{
@@ -23,6 +24,7 @@ type SocketAction struct {
 }
 
 type SocketSession struct {
+	ID uuid.UUID `json:"id"`
 	Connection *websocket.Conn `json:"-"`
 	RoomID string `json:"room_id"`
 	IsOwner bool `json:"is_owner"`
@@ -36,9 +38,14 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// initialize session and store socket connection
 	var ss *SocketSession
 	ss = new(SocketSession)
+	ss.ID = uuid.NewV4()
 	ss.Connection = conn
+
+	// storing the connection like this allows us to send messages in other parts of the code
+	// example: ss.Connection.WriteMessage(websocket.TextMessage, []byte("ping!"))
 
 	for {
 
@@ -66,6 +73,7 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// serialize response to json and write to client
+		// message types: https://github.com/gorilla/websocket/blob/master/conn.go#L62
 		rbytes, _ := json.Marshal(response)
 		conn.WriteMessage(t, rbytes)
 	
