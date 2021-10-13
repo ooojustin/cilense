@@ -12,7 +12,8 @@ import Message from "./Message";
 
 import { 
     initWebSocket,
-    joinRoom
+    joinRoom,
+    authenticate
 } from '../websocket';
 
 export default {
@@ -41,21 +42,21 @@ export default {
             this.room = data;
         });
 
+        // retrieve token for room from local storage, if it exists
+        let token = null;
+        const tokens = JSON.parse(localStorage.getItem("tokens")) || {};
+        if (Object.prototype.hasOwnProperty.call(tokens, id))
+            token = tokens[id];
+
         // func will when websocket connect is opened
         const onOpen = () => {
             console.log("Connected to websocket.");
             joinRoom(id);
+            token && authenticate(token);
         }
 
         // initializie web socket connection
         initWebSocket(onOpen, this.handleMessage);
-
-        const tokens = JSON.parse(localStorage.getItem("tokens")) || {};
-        if (Object.prototype.hasOwnProperty.call(tokens, id)) {
-            // password is stored in local storage?
-            const token = tokens[id];
-            console.log("room token:", token);
-        }
 
     }
 }

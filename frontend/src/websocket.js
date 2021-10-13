@@ -30,3 +30,10 @@ export const sendMessage = message => {
         data: { message }
     });
 }
+
+export const authenticate = token => {
+    send({
+        action: "authenticate",
+        data: { token }
+    });
+}

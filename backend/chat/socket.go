@@ -58,8 +58,9 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 		// execute action on client data to determine response
 		var response gin.H
 		switch sa.Action {
-		case "join_room": JoinRoom(data, ss, &response)
-		case "send_message": SendMessage(data, ss, &response)
+		case "join_room": JoinRoom(data, &response, ss)
+		case "send_message": SendMessage(data, &response, ss)
+		case "authenticate": Authenticate(data, &response, ss)
 		default:
 			fmt.Println("Unhandled action:", sa.Action)
 		}
