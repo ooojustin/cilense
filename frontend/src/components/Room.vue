@@ -13,6 +13,7 @@ import Message from "./Message";
 import { 
     initWebSocket,
     joinRoom,
+    sendMessage,
     authenticate
 } from '../websocket';
 
@@ -53,6 +54,7 @@ export default {
             console.log("Connected to websocket.");
             joinRoom(id);
             token && authenticate(token);
+            sendMessage("hello");
         }
 
         // initializie web socket connection

@@ -10,26 +10,6 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-var upgrader = websocket.Upgrader{
-	ReadBufferSize:  1024,
-	WriteBufferSize: 1024,
-	CheckOrigin: func(r *http.Request) bool { 
-		return true 
-	},
-}
-
-type SocketAction struct {
-	Action string `json:"action"`
-	Data interface{} `json:"data"`
-}
-
-type SocketSession struct {
-	ID uuid.UUID `json:"id"`
-	Connection *websocket.Conn `json:"-"`
-	RoomID string `json:"room_id"`
-	IsOwner bool `json:"is_owner"`
-}
-
 func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 
 	conn, err := upgrader.Upgrade(w, r, nil)
@@ -79,4 +59,30 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 	
 	}
 
+}
+
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	CheckOrigin: func(r *http.Request) bool { 
+		return true 
+	},
+}
+
+type SocketAction struct {
+	Action string `json:"action"`
+	Data interface{} `json:"data"`
+}
+
+type SocketSession struct {
+	ID uuid.UUID `json:"id"`
+	Connection *websocket.Conn `json:"-"`
+	RoomID string `json:"room_id"`
+	IsOwner bool `json:"is_owner"`
+}
+
+type ChatMessage struct {
+	ID uuid.UUID `json:"id"`
+	Session uuid.UUID `json:"session"`
+	Text string `json:"text"`
 }

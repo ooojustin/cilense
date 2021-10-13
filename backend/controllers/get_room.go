@@ -31,11 +31,17 @@ func GetRoom(c *gin.Context) {
 }
 
 func GetRoomAuthenticated(c *gin.Context) {
+
+	// get the rooom from database
 	id := c.Param("id")
 	room := GetRoomFromID(id)
+
+	// compare password in request to hashed password
 	hash := room.Password
 	c.BindJSON(&room)
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(room.Password))
+
+	// if the password was correct, return the whole room object (with token)
 	if err == nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": true,
@@ -47,4 +53,5 @@ func GetRoomAuthenticated(c *gin.Context) {
 			"error": "Failed to authorize request.",
 		})
 	}
+
 }
