@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"cilense.co/models"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	uuid "github.com/satori/go.uuid"
@@ -23,6 +24,10 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 	ss = new(SocketSession)
 	ss.ID = uuid.NewV4()
 	ss.Connection = conn
+	ss.Model = models.Session{
+		Room: nil,
+	}
+	ss.Model.ID = ss.ID
 
 	// storing the connection like this allows us to send messages in other parts of the code
 	// example: ss.Connection.WriteMessage(websocket.TextMessage, []byte("ping!"))
@@ -41,13 +46,16 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 			break
 		}
 		data := sa.Data.(map[string]interface{})
-		
+
 		// execute action on client data to determine response
 		var response gin.H
 		switch sa.Action {
-		case "join_room": JoinRoom(data, &response, ss)
-		case "send_message": SendMessage(data, &response, ss)
-		case "authenticate": Authenticate(data, &response, ss)
+		case "join_room":
+			JoinRoom(data, &response, ss)
+		case "send_message":
+			SendMessage(data, &response, ss)
+		case "authenticate":
+			Authenticate(data, &response, ss)
 		default:
 			fmt.Println("Unhandled action:", sa.Action)
 		}
@@ -56,7 +64,7 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 		// message types: https://github.com/gorilla/websocket/blob/master/conn.go#L62
 		rbytes, _ := json.Marshal(response)
 		conn.WriteMessage(t, rbytes)
-	
+
 	}
 
 }
@@ -64,25 +72,26 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
-	CheckOrigin: func(r *http.Request) bool { 
-		return true 
+	CheckOrigin: func(r *http.Request) bool {
+		return true
 	},
 }
 
 type SocketAction struct {
-	Action string `json:"action"`
-	Data interface{} `json:"data"`
+	Action string      `json:"action"`
+	Data   interface{} `json:"data"`
 }
 
 type SocketSession struct {
-	ID uuid.UUID `json:"id"`
+	ID         uuid.UUID       `json:"id"`
 	Connection *websocket.Conn `json:"-"`
-	RoomID string `json:"room_id"`
-	IsOwner bool `json:"is_owner"`
+	RoomID     string          `json:"room_id"`
+	IsOwner    bool            `json:"is_owner"`
+	Model      models.Session  `json:"-"`
 }
 
 type ChatMessage struct {
-	ID uuid.UUID `json:"id"`
+	ID      uuid.UUID `json:"id"`
 	Session uuid.UUID `json:"session"`
-	Text string `json:"text"`
+	Text    string    `json:"text"`
 }

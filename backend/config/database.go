@@ -14,5 +14,6 @@ func InitDatabase() {
 		panic("failed to connect database")
 	}
 	database.AutoMigrate(&models.Room{})
+	database.AutoMigrate(&models.Session{})
 	DB = database
 }

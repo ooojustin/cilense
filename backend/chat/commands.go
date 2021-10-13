@@ -1,6 +1,7 @@
 package chat
 
 import (
+	"cilense.co/config"
 	"cilense.co/controllers"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
@@ -8,7 +9,10 @@ import (
 
 func JoinRoom(data gin.H, res *gin.H, ss *SocketSession) {
 	roomID := data["room_id"]
+	room := controllers.GetRoomFromID(roomID.(string))
 	ss.RoomID = roomID.(string)
+	ss.Model.Room = &room
+	config.DB.Create(&ss.Model)
 	*res = gin.H{
 		"session_id": ss.ID.String(),
 	}
@@ -16,9 +20,9 @@ func JoinRoom(data gin.H, res *gin.H, ss *SocketSession) {
 
 func SendMessage(data gin.H, res *gin.H, ss *SocketSession) {
 	msg := ChatMessage{
-		ID: uuid.NewV4(),
+		ID:      uuid.NewV4(),
 		Session: ss.ID,
-		Text: data["message"].(string),
+		Text:    data["message"].(string),
 	}
 	*res = gin.H{
 		"data": msg,

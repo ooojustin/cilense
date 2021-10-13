@@ -12,8 +12,13 @@ export const initWebSocket = (onopen, onmessage) => {
     const url = "ws" + vars.backend.slice(4) + "ws";
     ws = new WebSocket(url);
 
-    ws.onmessage = onmessage;
     ws.onopen = onopen;
+    ws.onmessage = msg => {
+        // convert message to object before passing to handler
+        const datastr = unescape(msg.data);
+        const data = JSON.parse(datastr);
+        onmessage(data);
+    };
 
 }
 
