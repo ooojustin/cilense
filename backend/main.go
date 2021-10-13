@@ -27,6 +27,7 @@ func main() {
 	})
 
 	router.POST("/create_room", controllers.CreateRoom)
+	router.POST("/room/:id", controllers.GetRoomAuthenticated)
 	router.GET("/room/:id", controllers.GetRoom)
 
 	router.Run()

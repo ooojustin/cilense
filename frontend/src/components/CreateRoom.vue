@@ -1,5 +1,5 @@
 <template>
-    <div class="create-room bg-gray-700 rounded-md">
+    <div class="create-room bg-gray-700 rounded-md border border-gray-500">
         <div class="py-5 text-xl">
             Create Room
         </div>

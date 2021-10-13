@@ -6,6 +6,7 @@ import (
 	"cilense.co/config"
 	"cilense.co/models"
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func GetRoomFromID(id string) models.Room {
@@ -27,4 +28,23 @@ func GetRoom(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": room})
 
+}
+
+func GetRoomAuthenticated(c *gin.Context) {
+	id := c.Param("id")
+	room := GetRoomFromID(id)
+	hash := room.Password
+	c.BindJSON(&room)
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(room.Password))
+	if err == nil {
+		c.JSON(http.StatusOK, gin.H{
+			"success": true,
+			"data": room,
+		})
+	} else {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"success": false,
+			"error": "Failed to authorize request.",
+		})
+	}
 }

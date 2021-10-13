@@ -1,6 +1,8 @@
 package chat
 
 import (
+	"fmt"
+
 	"cilense.co/controllers"
 	"github.com/gin-gonic/gin"
 )
@@ -15,6 +17,7 @@ func JoinRoom(data gin.H, res *gin.H, ss *SocketSession) {
 
 func SendMessage(data gin.H, res *gin.H, ss *SocketSession) {
 	message := data["message"]
+	fmt.Println(message)
 	// TODO
 	*res = gin.H {}
 }

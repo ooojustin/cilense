@@ -1,5 +1,5 @@
 <template>
-    <div class="share-room bg-gray-700 rounded-md">
+    <div class="share-room bg-gray-700 rounded-md border border-gray-500">
         <div class="py-5 text-xl">
             Share Room
         </div>

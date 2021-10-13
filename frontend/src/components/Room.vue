@@ -1,6 +1,6 @@
 <template>
     <div class="flex items-center justify-center h-screen">
-        <div class="chat-container bg-gray-700 rounded-md p-5 border border-gray-500" style="height: 60%;">
+        <div class="chat-container bg-gray-700 p-5 rounded-md border border-gray-500" style="height: 60%;">
             <Message text="test message" />
         </div>
     </div>
