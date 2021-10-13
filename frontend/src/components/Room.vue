@@ -39,7 +39,9 @@ export default {
         ws.onopen = () => {
             const params = {
                 action: "join_room",
-                room_id: id
+                data: {
+                    room_id: id
+                }
             };
             ws.send(JSON.stringify(params));
         }
