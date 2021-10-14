@@ -3,7 +3,9 @@
         <div class="py-5 text-xl">
             Create Room
         </div>
-        <input class="bg-gray-800 rounded-md py-2 px-2.5" name="password" v-model="password" type="password" placeholder="Password" />
+        <input class="bg-gray-800 rounded-md py-2 px-2.5" name="name" v-model="name" type="text" placeholder="Name" />
+        <br />
+        <input class="bg-gray-800 rounded-md py-2 px-2.5 mt-3" name="password" v-model="password" type="password" placeholder="Password" />
         <br />
         <button class="bg-blue-700 hover:bg-blue-500 rounded-md py-2 mt-3 mb-6" type="button" @click="onSubmit">
             Generate
@@ -18,13 +20,14 @@ export default {
     name: 'CreateRoom',
     data() {
         return {
+            name: "",
             password: ""
         }
     },
     methods: {
         onSubmit() {
-            const { password } = this;
-            vars.api.post("create_room", { password })
+            const { name, password } = this;
+            vars.api.post("create_room", { name, password })
             .then(r => {
                 const { session } = r.data;
                 const { room } = session;

@@ -19,6 +19,7 @@ func GetRoomFromID(id string) *models.Room {
 }
 
 func GetRoom(c *gin.Context) {
+
 	// get the room from database
 	id := c.Param("id")
 	room := GetRoomFromID(id)
@@ -26,5 +27,9 @@ func GetRoom(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, "Error")
 		return
 	}
+
+	// omit empty password field and return
+	room.Password = ""
 	c.JSON(http.StatusOK, gin.H{"data": room})
+
 }
