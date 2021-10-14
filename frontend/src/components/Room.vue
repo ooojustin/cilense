@@ -1,19 +1,7 @@
 <template>
     <div class="flex items-center justify-center h-screen">
 
-        <div class="pw-container bg-gray-700 rounded-md border border-gray-500" v-if="!session">
-            <div class="py-5 text-xl">
-                Join Room
-            </div>
-            <div class="bg-red-600 mx-auto rounded-md py-2 border-2 border-red-300 mb-3 font-semibold pw-alert" v-if="wrong_password">
-                Incorrect password.
-            </div>
-            <input class="bg-gray-800 rounded-md py-2 px-2.5" name="password" v-model="password" type="password" placeholder="Password" />
-            <br />
-            <button class="bg-blue-700 hover:bg-blue-500 rounded-md py-2 mt-3 mb-6" type="button" @click="onSubmitPassword">
-                Submit
-            </button>
-        </div>
+        <JoinRoom @password-submit="onSubmitPassword" :wrong_password="this.wrong_password" v-if="!session" />
 
         <div class="chat-container bg-gray-700 p-5 rounded-md border border-gray-500 flex flex-col justify-between" style="height: 60%;" v-if="session">
             <div class="message-container">
@@ -32,6 +20,7 @@
 
 <script>
 import vars from "../variables";
+import JoinRoom from "./JoinRoom";
 import Message from "./Message";
 
 import { 
@@ -44,6 +33,7 @@ import {
 export default {
     name: 'Room',
     components: {
+        JoinRoom,
         Message
     },
     methods: {
@@ -81,9 +71,10 @@ export default {
             }
 
         },
-        onSubmitPassword() {
+        onSubmitPassword(password) {
             // join via websocket
-            joinRoom(this.room.id, this.password);
+            console.log("onSubmitPassword");
+            joinRoom(this.room.id, password);
         },
         onSendMessage() {
             sendMessage(this.message);
@@ -134,15 +125,6 @@ export default {
 .chat-container {
     width: 60%;
 }
-.pw-container {
-    width: 600px;
-    margin-bottom: 240px;
-}
-input, 
-button,
-.pw-alert { 
-    width: 450px; 
-}
 .message-container {
     max-height: 90%;
     overflow-x: hidden;
@@ -152,9 +134,7 @@ button,
 @media (max-width:500px) {
     input,
     button,
-    .chat-container,
-    .pw-container,
-    .pw-alert {
+    .chat-container {
         width: 90% !important;
     }
     .send-btn,
