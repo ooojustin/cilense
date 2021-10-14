@@ -1,7 +1,10 @@
 <template>
     <div class="pw-container bg-gray-700 rounded-md border border-gray-500" v-if="!session">
-        <div class="py-5 text-xl">
+        <div class="pt-5 pb-2 text-xl">
             Join Room
+        </div>
+        <div class="pb-4 text-md font-semibold">
+            {{ room.name }}
         </div>
         <div class="bg-red-600 mx-auto rounded-md py-2 border-2 border-red-300 mb-3 font-semibold pw-alert" v-if="wrong_password">
             Incorrect password.
@@ -18,6 +21,7 @@
 export default {
     name: 'JoinRoom',
     props: {
+        room: Object,
         wrong_password: Boolean
     },
     data() {

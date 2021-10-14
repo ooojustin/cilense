@@ -1,17 +1,25 @@
 <template>
     <div class="flex items-center justify-center h-screen">
 
-        <JoinRoom @password-submit="onSubmitPassword" :wrong_password="this.wrong_password" v-if="!session" />
+        <JoinRoom @password-submit="onSubmitPassword" :room="this.room" :wrong_password="this.wrong_password" v-if="!session" />
 
-        <div class="chat-container bg-gray-700 p-5 rounded-md border border-gray-500 flex flex-col justify-between" style="height: 60%;" v-if="session">
-            <div class="message-container">
-                <Message :data="msg" :key="index" v-for="(msg, index) in messages" />
-            </div>
-            <div>
-                <input class="bg-gray-800 rounded-md py-2 px-2.5 float-left msg-input" style="width: 88%;" name="password" v-model="message" type="text" placeholder="..." />
-                <button class="bg-blue-700 hover:bg-blue-500 rounded-md py-2 float-right send-btn" style="width: 10%;" type="button" @click="onSendMessage">
-                    Send
-                </button>
+
+        <div v-if="session" class="chat-container" style="height: 75%;">
+            <div class="bg-gray-700 p-5 rounded-md border border-gray-500 flex flex-col justify-between" style="width: 100%; height: 90%;">
+                <span>
+                    <div class="bg-gray-800 p-2 rounded-md border border-gray-600 font-semibold mb-2" style="width: 100%;">
+                        {{ room.name }}
+                    </div>
+                    <div class="message-container">
+                        <Message :data="msg" :key="index" v-for="(msg, index) in messages" />
+                    </div>
+                </span>
+                <div>
+                    <input class="bg-gray-800 rounded-md py-2 px-2.5 float-left msg-input" style="width: 88%;" name="password" v-model="message" type="text" placeholder="..." />
+                    <button class="bg-blue-700 hover:bg-blue-500 rounded-md py-2 float-right send-btn" style="width: 10%;" type="button" @click="onSendMessage">
+                        Send
+                    </button>
+                </div>
             </div>
         </div>
 

@@ -70,8 +70,10 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-var sessions = make(map[*SocketSession]bool)
-var mchannel = make(chan ChatMessage)
+var (
+	sessions = make(map[*SocketSession]bool)
+	mchannel = make(chan ChatMessage)
+)
 
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
