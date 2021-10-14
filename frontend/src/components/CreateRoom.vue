@@ -26,7 +26,8 @@ export default {
             const { password } = this;
             vars.api.post("create_room", { password })
             .then(r => {
-                const { room, session } = r.data;
+                const { session } = r.data;
+                const { room } = session;
                 this.$emit("room-created", room);
                 this.storeSession(room, session);
             });
