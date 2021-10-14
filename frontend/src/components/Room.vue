@@ -159,6 +159,7 @@ button,
     }
     .send-btn,
     .msg-input {
+        margin-top: 10px;
         width: 100% !important;
     }
     .send-btn {
