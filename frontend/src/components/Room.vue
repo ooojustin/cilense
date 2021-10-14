@@ -13,8 +13,16 @@
                 Submit
             </button>
         </div>
-        <div class="chat-container bg-gray-700 p-5 rounded-md border border-gray-500" style="height: 60%;" v-if="session">
-            <Message text="test message" />
+        <div class="chat-container bg-gray-700 p-5 rounded-md border border-gray-500 flex flex-col justify-between" style="height: 60%;" v-if="session">
+            <div>
+                <Message text="test message" />
+            </div>
+            <div>
+                <input class="bg-gray-800 rounded-md py-2 px-2.5 float-left msg-input" style="width: 88%;" name="password" v-model="message" type="text" placeholder="..." />
+                <button class="bg-blue-700 hover:bg-blue-500 rounded-md py-2 float-right send-btn" style="width: 10%;" type="button" @click="onSendMessage">
+                    Send
+                </button>
+            </div>
         </div>
     </div>
 </template>
@@ -62,12 +70,20 @@ export default {
                     this.wrong_password = true;
                     break;
                 }
+                case "new_message": {
+                    this.messages = this.messages.concat(msg.data);
+                    break;
+                }
             }
 
         },
         onSubmitPassword() {
             // join via websocket
             joinRoom(this.room.id, this.password);
+        },
+        onSendMessage() {
+            sendMessage(this.message);
+            this.message = "";
         }
     },
     data() {
@@ -75,7 +91,9 @@ export default {
             room: null,
             session: null,
             password: "",
-            wrong_password: false
+            wrong_password: false,
+            message: "",
+            messages: []
         };
     },
     created() {
@@ -98,8 +116,6 @@ export default {
         const onOpen = () => {
             console.log("Connected to websocket.");
             this.session && restoreSession(this.session);
-            // this.session || joinRoom(id);
-            // setTimeout(() => sendMessage("hello"), 3000);
         }
 
         // initializie web socket connection
@@ -131,6 +147,13 @@ button,
     .pw-container,
     .pw-alert {
         width: 90% !important;
+    }
+    .send-btn,
+    .msg-input {
+        width: 100% !important;
+    }
+    .send-btn {
+        margin-top: 10px;
     }
 }
 
