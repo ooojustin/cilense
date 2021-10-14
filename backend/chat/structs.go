@@ -25,4 +25,5 @@ type ChatMessage struct {
 	Text    string         `json:"text"`
 	Sent    bool           `json:"sent"`
 	Session *SocketSession `json:"-"`
+	RoomID  string         `json:"-"`
 }

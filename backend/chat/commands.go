@@ -70,6 +70,7 @@ func SendMessage(data gin.H, res *gin.H, ss *SocketSession) {
 		Text:    data["message"].(string),
 		Sent:    true,
 		Session: ss,
+		RoomID:  ss.RoomID,
 	}
 
 	// set response for message sender

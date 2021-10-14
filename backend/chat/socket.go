@@ -17,8 +17,6 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		fmt.Println("Failed to set websocket upgrade: %+v", err)
 		return
-	} else {
-		clients[conn] = true
 	}
 
 	// initialize session and store socket connection
@@ -30,6 +28,7 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 		Room: nil,
 	}
 	ss.Model.ID = ss.ID
+	sessions[ss] = true
 
 	// storing the connection like this allows us to send messages in other parts of the code
 	// example: ss.Connection.WriteMessage(websocket.TextMessage, []byte("ping!"))
@@ -71,7 +70,7 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-var clients = make(map[*websocket.Conn]bool)
+var sessions = make(map[*SocketSession]bool)
 var mchannel = make(chan ChatMessage)
 
 var upgrader = websocket.Upgrader{

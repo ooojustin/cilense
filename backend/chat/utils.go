@@ -23,18 +23,23 @@ func MessageSender() {
 		}
 		pbytes, _ := json.Marshal(packet)
 
-		for client := range clients {
+		for session := range sessions {
 
 			// don't send this to the message sender
-			if client == msg.Session.Connection {
+			if session == msg.Session {
+				continue
+			}
+
+			// ensure we only send it to people in the correct room
+			if session.RoomID != msg.RoomID {
 				continue
 			}
 
 			// send message to client / handle failure
-			err := client.WriteMessage(websocket.TextMessage, pbytes)
+			err := session.Connection.WriteMessage(websocket.TextMessage, pbytes)
 			if err != nil {
-				client.Close()
-				delete(clients, client)
+				session.Connection.Close()
+				delete(sessions, session)
 			}
 
 		}
