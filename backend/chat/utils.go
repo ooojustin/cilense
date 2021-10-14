@@ -3,37 +3,40 @@ package chat
 import (
 	"encoding/json"
 	"strings"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 )
 
-func DoSendMessage(msg ChatMessage, ss *SocketSession) {
+func MessageSender() {
 
-	// wait for 2 seconds (avoid concurrent write)
-	time.Sleep(2 * time.Second)
+	for {
 
-	// new message data to send to clients
-	msg.Sent = false
-	packet := gin.H{
-		"type":    "new_message",
-		"message": msg,
-	}
-	pbytes, _ := json.Marshal(packet)
+		// read new message from the message channel
+		msg := <-mchannel
 
-	for client := range clients {
-
-		// don't send message to sender (it's been stored already)
-		if client == ss.Connection {
-			continue
+		// new message data to send to clients
+		msg.Sent = false
+		packet := gin.H{
+			"type":    "new_message",
+			"message": msg,
 		}
+		pbytes, _ := json.Marshal(packet)
 
-		// send message to client / handle failure
-		err := client.WriteMessage(websocket.TextMessage, pbytes)
-		if err != nil {
-			client.Close()
-			delete(clients, client)
+		for client := range clients {
+
+			// don't send this to the message sender
+			if client == msg.Session.Connection {
+				continue
+			}
+
+			// send message to client / handle failure
+			err := client.WriteMessage(websocket.TextMessage, pbytes)
+			if err != nil {
+				client.Close()
+				delete(clients, client)
+			}
+
 		}
 
 	}

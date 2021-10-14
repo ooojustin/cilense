@@ -33,6 +33,7 @@ func RestoreSession(data gin.H, res *gin.H, ss *SocketSession) {
 
 func JoinRoom(data gin.H, res *gin.H, ss *SocketSession) {
 
+	// get room to join from database
 	roomID := data["room_id"].(string)
 	room := controllers.GetRoomFromID(roomID)
 
@@ -47,10 +48,12 @@ func JoinRoom(data gin.H, res *gin.H, ss *SocketSession) {
 		return
 	}
 
+	// create session model
 	ss.RoomID = roomID
 	ss.Model.Room = room
 	config.DB.Create(ss.Model)
 
+	// respond with session id for future use
 	*res = gin.H{
 		"type":       "room_joined",
 		"session_id": ss.ID.String(),
@@ -60,18 +63,22 @@ func JoinRoom(data gin.H, res *gin.H, ss *SocketSession) {
 
 func SendMessage(data gin.H, res *gin.H, ss *SocketSession) {
 
+	// initialize chat message
 	msg := ChatMessage{
-		ID:    uuid.NewV4(),
-		Alias: GenerateAlias(ss),
-		Text:  data["message"].(string),
-		Sent:  true,
+		ID:      uuid.NewV4(),
+		Alias:   GenerateAlias(ss),
+		Text:    data["message"].(string),
+		Sent:    true,
+		Session: ss,
 	}
 
+	// set response for message sender
 	*res = gin.H{
 		"type":    "message_sent",
 		"message": msg,
 	}
 
-	go DoSendMessage(msg, ss)
+	// pass message to broadcast channel
+	mchannel <- msg
 
 }

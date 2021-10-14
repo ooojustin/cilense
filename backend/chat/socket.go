@@ -11,8 +11,6 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-var clients = make(map[*websocket.Conn]bool)
-
 func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 
 	conn, err := upgrader.Upgrade(w, r, nil)
@@ -72,6 +70,9 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 }
+
+var clients = make(map[*websocket.Conn]bool)
+var mchannel = make(chan ChatMessage)
 
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,

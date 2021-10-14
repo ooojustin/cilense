@@ -20,8 +20,9 @@ type SocketSession struct {
 }
 
 type ChatMessage struct {
-	ID    uuid.UUID `json:"id"`
-	Alias string    `json:"alias"`
-	Text  string    `json:"text"`
-	Sent  bool      `json:"sent"`
+	ID      uuid.UUID      `json:"id"`
+	Alias   string         `json:"alias"`
+	Text    string         `json:"text"`
+	Sent    bool           `json:"sent"`
+	Session *SocketSession `json:"-"`
 }

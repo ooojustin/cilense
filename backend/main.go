@@ -14,6 +14,8 @@ func main() {
 
 	config.InitDatabase()
 
+	go chat.MessageSender()
+
 	router := gin.Default()
 	router.Use(cors.Default())
 
