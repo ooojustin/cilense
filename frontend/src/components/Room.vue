@@ -5,18 +5,16 @@
 
 
         <div v-if="session" class="chat-container" style="height: 75%;">
+            <div class="bg-gray-800 p-2 rounded-md border border-gray-600 font-semibold mb-2" style="width: 100%;">
+                {{ room.name }}
+            </div>
             <div class="bg-gray-700 p-5 rounded-md border border-gray-500 flex flex-col justify-between" style="width: 100%; height: 90%;">
-                <span>
-                    <div class="bg-gray-800 p-2 rounded-md border border-gray-600 font-semibold mb-2" style="width: 100%;">
-                        {{ room.name }}
-                    </div>
-                    <div class="message-container">
-                        <Message :data="msg" :key="index" v-for="(msg, index) in messages" />
-                    </div>
-                </span>
+                <div class="message-container">
+                    <Message :data="msg" :key="index" v-for="(msg, index) in messages" />
+                </div>
                 <div>
                     <input class="bg-gray-800 rounded-md py-2 px-2.5 float-left msg-input" style="width: 88%;" name="password" v-model="message" type="text" placeholder="..." />
-                    <button class="bg-blue-700 hover:bg-blue-500 rounded-md py-2 float-right send-btn" style="width: 10%;" type="button" @click="onSendMessage">
+                    <button class="bg-blue-700 hover:bg-blue-500 rounded-md py-2 float-right send-btn" style="width: 10%;" type="button" @click="onSendMessage" :disabled="!message.length">
                         Send
                     </button>
                 </div>
@@ -137,6 +135,11 @@ export default {
     max-height: 90%;
     overflow-x: hidden;
     overflow-y: scroll;
+}
+
+button:disabled {
+    cursor: default;
+    background-color: gray;
 }
 
 @media (max-width:500px) {

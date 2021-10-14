@@ -37,6 +37,8 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 
 		t, msg, err := conn.ReadMessage()
 		if err != nil {
+			conn.Close()
+			delete(sessions, ss)
 			break
 		}
 
@@ -44,6 +46,8 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 		var sa SocketAction
 		err = json.Unmarshal(msg, &sa)
 		if err != nil {
+			conn.Close()
+			delete(sessions, ss)
 			break
 		}
 		data := sa.Data.(map[string]interface{})

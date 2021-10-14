@@ -1,5 +1,5 @@
 <template>
-    <div class="msg mt-2 text-left rounded-md bg-blue-600 border border-blue-400 p-2" v-bind:class="{ 'msg-out': data.sent, 'msg-in': !data.sent }">
+    <div class="msg mb-4 text-left rounded-md bg-blue-600 border border-blue-400 p-2" v-bind:class="{ 'msg-out': data.sent, 'msg-in': !data.sent }">
         {{ data.text }}
         <br />
         <span class="text-xs text-gray-300">
