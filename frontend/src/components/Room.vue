@@ -1,5 +1,6 @@
 <template>
     <div class="flex items-center justify-center h-screen">
+
         <div class="pw-container bg-gray-700 rounded-md border border-gray-500" v-if="!session">
             <div class="py-5 text-xl">
                 Join Room
@@ -13,9 +14,10 @@
                 Submit
             </button>
         </div>
+
         <div class="chat-container bg-gray-700 p-5 rounded-md border border-gray-500 flex flex-col justify-between" style="height: 60%;" v-if="session">
             <div>
-                <Message text="test message" />
+                <Message :text="msg.text" v-for="msg in messages" />
             </div>
             <div>
                 <input class="bg-gray-800 rounded-md py-2 px-2.5 float-left msg-input" style="width: 88%;" name="password" v-model="message" type="text" placeholder="..." />
@@ -24,6 +26,7 @@
                 </button>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -70,8 +73,9 @@ export default {
                     this.wrong_password = true;
                     break;
                 }
+                case "message_sent":
                 case "new_message": {
-                    this.messages = this.messages.concat(msg.data);
+                    this.messages = this.messages.concat(msg.message);
                     break;
                 }
             }

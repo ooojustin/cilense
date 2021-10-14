@@ -10,8 +10,8 @@ import (
 
 func DoSendMessage(msg ChatMessage, ss *SocketSession) {
 
-	// pause for 5 seconds (avoid concurrent write)
-	time.Sleep(5 * time.Second)
+	// wait for 2 seconds (avoid concurrent write)
+	time.Sleep(2 * time.Second)
 
 	// new message data to send to clients
 	packet := gin.H{
