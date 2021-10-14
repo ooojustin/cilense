@@ -1,6 +1,6 @@
 <template>
-    <div class="message text-left rounded-md bg-gray-800 border border-gray-600 p-3">
-        {{ text }}
+    <div class="msg mt-2 text-left rounded-md bg-gray-800 border border-gray-600 p-3" v-bind:class="{ 'msg-out': data.sent, 'msg-in': !data.sent }">
+        {{ data.text }}
     </div>
 </template>
 
@@ -8,17 +8,22 @@
 export default {
     name: 'Message',
     props: {
-        text: String
+        data: Object
     }
 }
 </script>
 
 <style scoped>
-.message {
+.msg {
     width: 40%;
 }
+.msg-out {
+    margin-left: auto;
+    background-color: #2563EB;
+    border-color: #60A5FA;
+}
 @media (max-width:500px) {
-    .message {
+    .msg {
         width: 100%;
     }
 }

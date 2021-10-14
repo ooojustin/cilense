@@ -17,7 +17,7 @@
 
         <div class="chat-container bg-gray-700 p-5 rounded-md border border-gray-500 flex flex-col justify-between" style="height: 60%;" v-if="session">
             <div>
-                <Message :text="msg.text" v-for="msg in messages" />
+                <Message :data="msg" :key="index" v-for="(msg, index) in messages" />
             </div>
             <div>
                 <input class="bg-gray-800 rounded-md py-2 px-2.5 float-left msg-input" style="width: 88%;" name="password" v-model="message" type="text" placeholder="..." />

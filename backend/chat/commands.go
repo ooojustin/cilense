@@ -64,13 +64,14 @@ func SendMessage(data gin.H, res *gin.H, ss *SocketSession) {
 		ID:      uuid.NewV4(),
 		Session: ss.ID,
 		Text:    data["message"].(string),
+		Sent:    true,
 	}
-
-	go DoSendMessage(msg, ss)
 
 	*res = gin.H{
 		"type":    "message_sent",
 		"message": msg,
 	}
+
+	go DoSendMessage(msg, ss)
 
 }

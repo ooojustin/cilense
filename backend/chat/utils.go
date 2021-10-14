@@ -14,6 +14,7 @@ func DoSendMessage(msg ChatMessage, ss *SocketSession) {
 	time.Sleep(2 * time.Second)
 
 	// new message data to send to clients
+	msg.Sent = false
 	packet := gin.H{
 		"type":    "new_message",
 		"message": msg,
