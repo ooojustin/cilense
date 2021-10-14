@@ -61,10 +61,10 @@ func JoinRoom(data gin.H, res *gin.H, ss *SocketSession) {
 func SendMessage(data gin.H, res *gin.H, ss *SocketSession) {
 
 	msg := ChatMessage{
-		ID:      uuid.NewV4(),
-		Session: ss.ID,
-		Text:    data["message"].(string),
-		Sent:    true,
+		ID:    uuid.NewV4(),
+		Alias: GenerateAlias(ss),
+		Text:  data["message"].(string),
+		Sent:  true,
 	}
 
 	*res = gin.H{

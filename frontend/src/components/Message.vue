@@ -1,6 +1,10 @@
 <template>
-    <div class="msg mt-2 text-left rounded-md bg-gray-800 border border-gray-600 p-3" v-bind:class="{ 'msg-out': data.sent, 'msg-in': !data.sent }">
+    <div class="msg mt-2 text-left rounded-md bg-gray-800 border border-gray-600 p-2" v-bind:class="{ 'msg-out': data.sent, 'msg-in': !data.sent }">
         {{ data.text }}
+        <br />
+        <span class="text-xs text-gray-300">
+            @{{ data.alias }}
+        </span>
     </div>
 </template>
 

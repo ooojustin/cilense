@@ -2,6 +2,7 @@ package chat
 
 import (
 	"encoding/json"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -37,4 +38,15 @@ func DoSendMessage(msg ChatMessage, ss *SocketSession) {
 
 	}
 
+}
+
+func GenerateAlias(ss *SocketSession) string {
+	alias := ""
+	slice := strings.Split(ss.ID.String(), "-")
+	for i := range slice {
+		item := slice[i]
+		alias += item[0:1]
+		alias += item[len(item)-1:]
+	}
+	return alias
 }
