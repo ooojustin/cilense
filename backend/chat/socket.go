@@ -11,12 +11,16 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
+var clients = make(map[*websocket.Conn]bool)
+
 func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		fmt.Println("Failed to set websocket upgrade: %+v", err)
 		return
+	} else {
+		clients[conn] = true
 	}
 
 	// initialize session and store socket connection

@@ -66,8 +66,11 @@ func SendMessage(data gin.H, res *gin.H, ss *SocketSession) {
 		Text:    data["message"].(string),
 	}
 
+	go DoSendMessage(msg, ss)
+
 	*res = gin.H{
-		"data": msg,
+		"type":    "message_sent",
+		"message": msg,
 	}
 
 }
