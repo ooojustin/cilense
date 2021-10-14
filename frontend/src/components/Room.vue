@@ -16,7 +16,7 @@
         </div>
 
         <div class="chat-container bg-gray-700 p-5 rounded-md border border-gray-500 flex flex-col justify-between" style="height: 60%;" v-if="session">
-            <div>
+            <div class="message-container">
                 <Message :data="msg" :key="index" v-for="(msg, index) in messages" />
             </div>
             <div>
@@ -142,6 +142,11 @@ input,
 button,
 .pw-alert { 
     width: 450px; 
+}
+.message-container {
+    max-height: 90%;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 @media (max-width:500px) {

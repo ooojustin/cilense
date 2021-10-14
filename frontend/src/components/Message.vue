@@ -25,6 +25,7 @@ export default {
     margin-left: auto;
     background-color: #2563EB;
     border-color: #60A5FA;
+    margin-right: 10px;
 }
 @media (max-width:500px) {
     .msg {
