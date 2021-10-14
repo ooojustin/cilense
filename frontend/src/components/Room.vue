@@ -14,8 +14,7 @@ import {
     initWebSocket,
     restoreSession,
     joinRoom,
-    sendMessage,
-    authenticate
+    sendMessage
 } from '../websocket';
 
 export default {
@@ -82,8 +81,7 @@ export default {
             console.log("Connected to websocket.");
             this.session && restoreSession(this.session);
             this.session || joinRoom(id);
-            this.token && setTimeout(() => authenticate(this.token), 3000);
-            sendMessage("hello");
+            setTimeout(() => sendMessage("hello"), 3000);
         }
 
         // initializie web socket connection

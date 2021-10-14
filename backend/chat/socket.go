@@ -56,8 +56,6 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 			JoinRoom(data, &response, ss)
 		case "send_message":
 			SendMessage(data, &response, ss)
-		case "authenticate":
-			Authenticate(data, &response, ss)
 		default:
 			fmt.Println("Unhandled action:", sa.Action)
 		}

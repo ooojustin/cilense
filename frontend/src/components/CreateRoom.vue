@@ -26,15 +26,15 @@ export default {
             const { password } = this;
             vars.api.post("create_room", { password })
             .then(r => {
-                const { data } = r.data;
-                this.$emit("room-created", data);
-                this.storeToken(data);
+                const { room, session } = r.data;
+                this.$emit("room-created", room);
+                this.storeSession(room, session);
             });
         },
-        storeToken(room) {
-            const tokens = JSON.parse(localStorage.getItem("tokens")) || {};
-            tokens[room.id] = room.token;
-            localStorage.setItem("tokens", JSON.stringify(tokens));
+        storeSession(room, session) {
+            const sessions = JSON.parse(localStorage.getItem("sessions")) || {};
+            sessions[room.id] = session.id;
+            localStorage.setItem("sessions", JSON.stringify(sessions));
         }
     }
 }

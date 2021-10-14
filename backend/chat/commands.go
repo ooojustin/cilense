@@ -13,6 +13,7 @@ func RestoreSession(data gin.H, res *gin.H, ss *SocketSession) {
 	session := controllers.GetSessionFromID(sessionID)
 
 	if session != nil {
+		ss.ID = session.ID
 		ss.RoomID = session.RoomID
 		ss.IsOwner = session.IsOwner
 		ss.Model = session
@@ -55,38 +56,6 @@ func SendMessage(data gin.H, res *gin.H, ss *SocketSession) {
 
 	*res = gin.H{
 		"data": msg,
-	}
-
-}
-
-func Authenticate(data gin.H, res *gin.H, ss *SocketSession) {
-
-	// use session to locate room from db
-	room := controllers.GetRoomFromID(ss.RoomID)
-	if room == nil {
-		*res = gin.H{
-			"success": false,
-			"message": "Failed to authenticate - couldn't locate room.",
-		}
-		return
-	}
-
-	// set IsOwner to true
-	if room.Token == data["token"] {
-		ss.IsOwner = true
-		if !ss.Model.IsOwner {
-			ss.Model.IsOwner = true
-			config.DB.Save(ss.Model)
-		}
-	}
-
-	message := "Failed to authenticate."
-	if ss.IsOwner {
-		message = "Authentication successful."
-	}
-	*res = gin.H{
-		"success": ss.IsOwner,
-		"message": message,
 	}
 
 }
