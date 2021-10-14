@@ -3,6 +3,7 @@ import vars from './variables';
 let ws = null;
 
 export const send = data => {
+    console.log("send", data);
     const params = JSON.stringify(data);
     ws.send(params);
 }

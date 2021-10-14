@@ -9,11 +9,14 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func GetRoomFromID(id string) models.Room {
+func GetRoomFromID(id string) *models.Room {
 	// find room from database using id
 	var room models.Room
-	config.DB.Table("rooms").Where("id = ?", id).First(&room)
-	return room
+	err := config.DB.Table("rooms").Where("id = ?", id).First(&room).Error
+	if err == nil {
+		return &room
+	}
+	return nil
 }
 
 func GetRoom(c *gin.Context) {
@@ -21,6 +24,10 @@ func GetRoom(c *gin.Context) {
 	// get the room from database
 	id := c.Param("id")
 	room := GetRoomFromID(id)
+	if room == nil {
+		c.JSON(http.StatusInternalServerError, "Error")
+		return
+	}
 
 	// hide pw and api token from response
 	room.Password = ""
@@ -45,12 +52,12 @@ func GetRoomAuthenticated(c *gin.Context) {
 	if err == nil {
 		c.JSON(http.StatusOK, gin.H{
 			"success": true,
-			"data": room,
+			"data":    room,
 		})
 	} else {
 		c.JSON(http.StatusUnauthorized, gin.H{
 			"success": false,
-			"error": "Failed to authorize request.",
+			"error":   "Failed to authorize request.",
 		})
 	}
 

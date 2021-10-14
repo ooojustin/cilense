@@ -24,7 +24,7 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 	ss = new(SocketSession)
 	ss.ID = uuid.NewV4()
 	ss.Connection = conn
-	ss.Model = models.Session{
+	ss.Model = &models.Session{
 		Room: nil,
 	}
 	ss.Model.ID = ss.ID
@@ -50,6 +50,8 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 		// execute action on client data to determine response
 		var response gin.H
 		switch sa.Action {
+		case "restore_session":
+			RestoreSession(data, &response, ss)
 		case "join_room":
 			JoinRoom(data, &response, ss)
 		case "send_message":
@@ -87,7 +89,7 @@ type SocketSession struct {
 	Connection *websocket.Conn `json:"-"`
 	RoomID     string          `json:"room_id"`
 	IsOwner    bool            `json:"is_owner"`
-	Model      models.Session  `json:"-"`
+	Model      *models.Session `json:"-"`
 }
 
 type ChatMessage struct {

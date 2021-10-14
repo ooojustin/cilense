@@ -25,6 +25,7 @@ export default {
     },
     methods: {
         handleMessage(msg) {
+            console.log("receive", msg);
 
             // handle messages from the websocket
             // check if response has a 'type', for processing
@@ -57,6 +58,7 @@ export default {
     },
     created() {
 
+
         // load room data into local state
         const { id } = this.$route.params;
         vars.api.get("/room/" + id)
@@ -80,7 +82,7 @@ export default {
             console.log("Connected to websocket.");
             this.session && restoreSession(this.session);
             this.session || joinRoom(id);
-            this.token && authenticate(this.token);
+            this.token && setTimeout(() => authenticate(this.token), 3000);
             sendMessage("hello");
         }
 
