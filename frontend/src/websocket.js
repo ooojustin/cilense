@@ -30,10 +30,10 @@ export const restoreSession = session_id => {
     });
 }
 
-export const joinRoom = room_id => {
+export const joinRoom = (room_id, password) => {
     send({
         action: "join_room",
-        data: { room_id }
+        data: { room_id, password }
     });
 }
 

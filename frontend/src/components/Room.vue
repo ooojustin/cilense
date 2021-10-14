@@ -1,6 +1,19 @@
 <template>
     <div class="flex items-center justify-center h-screen">
-        <div class="chat-container bg-gray-700 p-5 rounded-md border border-gray-500" style="height: 60%;">
+        <div class="pw-container bg-gray-700 rounded-md border border-gray-500" v-if="!session">
+            <div class="py-5 text-xl">
+                Join Room
+            </div>
+            <div class="bg-red-600 mx-auto rounded-md py-2 border-2 border-red-300 mb-3 font-semibold pw-alert" v-if="wrong_password">
+                Incorrect password.
+            </div>
+            <input class="bg-gray-800 rounded-md py-2 px-2.5" name="password" v-model="password" type="password" placeholder="Password" />
+            <br />
+            <button class="bg-blue-700 hover:bg-blue-500 rounded-md py-2 mt-3 mb-6" type="button" @click="onSubmitPassword">
+                Submit
+            </button>
+        </div>
+        <div class="chat-container bg-gray-700 p-5 rounded-md border border-gray-500" style="height: 60%;" v-if="session">
             <Message text="test message" />
         </div>
     </div>
@@ -38,21 +51,31 @@ export default {
 
             switch (type) {
                 case "room_joined": {
-                    // store session inside local storage
+                    // store session inside state & local storage
+                    this.session = msg.session_id;
                     const sessions = JSON.parse(localStorage.getItem("sessions")) || {};
                     sessions[this.room.id] = msg.session_id;
                     localStorage.setItem("sessions", JSON.stringify(sessions));
                     break;
                 }
+                case "wrong_password": {
+                    this.wrong_password = true;
+                    break;
+                }
             }
 
+        },
+        onSubmitPassword() {
+            // join via websocket
+            joinRoom(this.room.id, this.password);
         }
     },
     data() {
         return {
             room: null,
-            token: null,
-            session: null
+            session: null,
+            password: "",
+            wrong_password: false
         };
     },
     created() {
@@ -66,11 +89,6 @@ export default {
             this.room = data;
         });
 
-        // retrieve room token from local storage
-        const tokens = JSON.parse(localStorage.getItem("tokens")) || {};
-        if (Object.prototype.hasOwnProperty.call(tokens, id))
-            this.token = tokens[id];
-
         // retrieve stored session from local storage
         const sessions = JSON.parse(localStorage.getItem("sessions")) || {};
         if (Object.prototype.hasOwnProperty.call(sessions, id))
@@ -80,8 +98,8 @@ export default {
         const onOpen = () => {
             console.log("Connected to websocket.");
             this.session && restoreSession(this.session);
-            this.session || joinRoom(id);
-            setTimeout(() => sendMessage("hello"), 3000);
+            // this.session || joinRoom(id);
+            // setTimeout(() => sendMessage("hello"), 3000);
         }
 
         // initializie web socket connection
@@ -96,9 +114,22 @@ export default {
 .chat-container {
     width: 60%;
 }
+.pw-container {
+    width: 600px;
+    margin-bottom: 240px;
+}
+input, 
+button,
+.pw-alert { 
+    width: 450px; 
+}
 
 @media (max-width:500px) {
-    .chat-container {
+    input,
+    button,
+    .chat-container,
+    .pw-container,
+    .pw-alert {
         width: 90% !important;
     }
 }

@@ -5,6 +5,7 @@ import (
 	"cilense.co/controllers"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
+	"golang.org/x/crypto/bcrypt"
 )
 
 func RestoreSession(data gin.H, res *gin.H, ss *SocketSession) {
@@ -34,6 +35,17 @@ func JoinRoom(data gin.H, res *gin.H, ss *SocketSession) {
 
 	roomID := data["room_id"].(string)
 	room := controllers.GetRoomFromID(roomID)
+
+	// verify password
+	hash := []byte(room.Password)
+	pw := []byte(data["password"].(string))
+	err := bcrypt.CompareHashAndPassword(hash, pw)
+	if err != nil {
+		*res = gin.H{
+			"type": "wrong_password",
+		}
+		return
+	}
 
 	ss.RoomID = roomID
 	ss.Model.Room = room
