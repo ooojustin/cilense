@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"cilense.co/models"
+	"cilense.co/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
 	uuid "github.com/satori/go.uuid"
@@ -25,7 +26,8 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 	ss.ID = uuid.NewV4()
 	ss.Connection = conn
 	ss.Model = &models.Session{
-		Room: nil,
+		Alias: utils.GenerateRandomAlias(),
+		Room:  nil,
 	}
 	ss.Model.ID = ss.ID
 	sessions[ss] = true

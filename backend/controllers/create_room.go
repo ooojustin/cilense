@@ -5,6 +5,7 @@ import (
 
 	"cilense.co/config"
 	"cilense.co/models"
+	"cilense.co/utils"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
 	"golang.org/x/crypto/bcrypt"
@@ -31,6 +32,7 @@ func CreateRoom(c *gin.Context) {
 	// create session for owner and save to db
 	session := models.Session{
 		ID:      uuid.NewV4(),
+		Alias:   utils.GenerateRandomAlias(),
 		Room:    &room,
 		IsOwner: true,
 	}

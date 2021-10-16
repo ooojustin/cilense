@@ -9,6 +9,7 @@ import (
 type Session struct {
 	ID        uuid.UUID `gorm:"primary_key" json:"id"`
 	CreatedAt time.Time `json:"created_at"`
+	Alias     string    `json:"alias"`
 	RoomID    string    `json:"-"`
 	Room      *Room     `json:"room" gorm:"foreignKey:RoomID;references:ID"`
 	IsOwner   bool      `json:"is_owner"`

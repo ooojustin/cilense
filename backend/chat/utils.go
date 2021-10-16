@@ -2,7 +2,6 @@ package chat
 
 import (
 	"encoding/json"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
@@ -46,15 +45,4 @@ func MessageSender() {
 
 	}
 
-}
-
-func GenerateAlias(ss *SocketSession) string {
-	alias := ""
-	slice := strings.Split(ss.ID.String(), "-")
-	for i := range slice {
-		item := slice[i]
-		alias += item[0:1]
-		alias += item[len(item)-1:]
-	}
-	return alias
 }

@@ -66,7 +66,7 @@ func SendMessage(data gin.H, res *gin.H, ss *SocketSession) {
 	// initialize chat message
 	msg := ChatMessage{
 		ID:      uuid.NewV4(),
-		Alias:   GenerateAlias(ss),
+		Alias:   ss.Model.Alias,
 		Text:    data["message"].(string),
 		Sent:    true,
 		Session: ss,
