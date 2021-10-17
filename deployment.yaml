@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cilense-deployment
+  labels:
+    app: cilense
 spec:
   selector:
     matchLabels:
@@ -15,5 +17,9 @@ spec:
       containers:
       - name: backend
         image: ooojustin/cilense-backend
+        ports:
+          - containerPort: 8080
       - name: frontend
         image: ooojustin/cilense-frontend
+        ports:
+          - containerPort: 80
