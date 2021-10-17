@@ -14,14 +14,18 @@ func RestoreSession(data gin.H, res *gin.H, ss *SocketSession) {
 	session := controllers.GetSessionFromID(sessionID)
 
 	if session != nil {
+
 		ss.ID = session.ID
 		ss.RoomID = session.RoomID
 		ss.IsOwner = session.IsOwner
 		ss.Model = session
+
+		AnnounceJoin(ss, true)
 		*res = gin.H{
 			"type":    "session_restored",
 			"session": session,
 		}
+
 	} else {
 		*res = gin.H{
 			"success": false,
@@ -54,22 +58,11 @@ func JoinRoom(data gin.H, res *gin.H, ss *SocketSession) {
 	config.DB.Create(ss.Model)
 
 	// respond with session id for future use
+	AnnounceJoin(ss, false)
 	*res = gin.H{
 		"type":       "room_joined",
 		"session_id": ss.ID.String(),
 	}
-
-	// create room message to announce player joined
-	msg := ChatMessage{
-		ID:            uuid.NewV4(),
-		Text:          "@" + ss.Model.Alias + " has joined the room.",
-		Session:       ss,
-		RoomID:        ss.RoomID,
-		IsRoomMessage: true,
-	}
-
-	// pass announcement to broadcast channel
-	mchannel <- msg
 
 }
 

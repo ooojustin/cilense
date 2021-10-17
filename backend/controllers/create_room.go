@@ -14,7 +14,7 @@ import (
 func CreateRoom(c *gin.Context) {
 
 	// initialize room and bind password
-	room := models.Room{}
+	room := models.Room{ID: uuid.NewV4()}
 	c.BindJSON(&room)
 
 	// hash password using bcrypt

@@ -2,9 +2,11 @@ package chat
 
 import (
 	"encoding/json"
+	"fmt"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/websocket"
+	uuid "github.com/satori/go.uuid"
 )
 
 func MessageSender() {
@@ -37,12 +39,39 @@ func MessageSender() {
 			// send message to client / handle failure
 			err := session.Connection.WriteMessage(websocket.TextMessage, pbytes)
 			if err != nil {
-				session.Connection.Close()
-				delete(sessions, session)
+				CloseSession(session)
 			}
 
 		}
 
 	}
 
+}
+
+func AnnounceJoin(ss *SocketSession, re bool) {
+
+	// joined or rejoined string
+	wrd := "joined"
+	if re {
+		wrd = "re" + wrd
+	}
+
+	// create room message to announce user joined
+	msg := ChatMessage{
+		ID:            uuid.NewV4(),
+		Text:          fmt.Sprintf("@%s has %s the room.", ss.Model.Alias, wrd),
+		Session:       ss,
+		RoomID:        ss.RoomID,
+		IsRoomMessage: true,
+	}
+
+	// pass announcement to broadcast channel
+	mchannel <- msg
+
+}
+
+func CloseSession(ss *SocketSession) {
+	// close connection and remove session object from slice
+	ss.Connection.Close()
+	delete(sessions, ss)
 }

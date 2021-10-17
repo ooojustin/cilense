@@ -35,8 +35,8 @@ export default {
     width: 65%;
     text-align: center;
     border-width: 3px;
-    background-color: #DB2777;
-    border-color: #F472B6;
+    background-color: #6D28D9;
+    border-color: #8B5CF6;
 }
 @media (max-width:500px) {
     .msg {
