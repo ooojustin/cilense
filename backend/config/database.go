@@ -2,14 +2,15 @@ package config
 
 import (
 	"cilense.co/models"
-	"gorm.io/driver/sqlite"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 var DB *gorm.DB
 
 func InitDatabase() {
-	database, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	dsn := "cilense:Qpmpv$fWv3PR6P@tcp(db.cilense.co:3306)/cilense?charset=utf8mb4&parseTime=True&loc=Local"
+	database, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
