@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cilense-deployment
+spec:
+  selector:
+    matchLabels:
+      app: cilense
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: cilense
+    spec:
+      containers:
+      - name: backend
+        image: ooojustin/cilense-backend
+      - name: frontend
+        image: ooojustin/cilense-frontend
