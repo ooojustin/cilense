@@ -24,12 +24,10 @@ func CreateRoom(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to hash password"})
 		return
 	}
-
-	// set hashed room password and save to db
 	room.Password = string(hash)
-	config.DB.Create(&room)
 
-	// create session for owner and save to db
+	// create session for owner containing the room and save to db
+	// note that the room is created automatically with the session
 	session := models.Session{
 		ID:      uuid.NewV4(),
 		Alias:   utils.GenerateRandomAlias(),
