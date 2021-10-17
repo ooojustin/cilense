@@ -59,6 +59,18 @@ func JoinRoom(data gin.H, res *gin.H, ss *SocketSession) {
 		"session_id": ss.ID.String(),
 	}
 
+	// create room message to announce player joined
+	msg := ChatMessage{
+		ID:            uuid.NewV4(),
+		Text:          "@" + ss.Model.Alias + " has joined the room.",
+		Session:       ss,
+		RoomID:        ss.RoomID,
+		IsRoomMessage: true,
+	}
+
+	// pass announcement to broadcast channel
+	mchannel <- msg
+
 }
 
 func SendMessage(data gin.H, res *gin.H, ss *SocketSession) {
