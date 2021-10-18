@@ -115,3 +115,9 @@ dmypy.json
 
 # database files
 *.db
+
+# kubernetes yaml files
+/*.yaml
+
+Dockerfile
+/docker-compose.yml
