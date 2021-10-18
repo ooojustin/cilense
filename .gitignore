@@ -119,5 +119,9 @@ dmypy.json
 # kubernetes yaml files
 /*.yaml
 
+# docker stuff
 Dockerfile
 /docker-compose.yml
+
+# frontend nginx config
+/frontend/nginx.conf

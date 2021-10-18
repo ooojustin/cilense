@@ -19,8 +19,8 @@ func InitDatabase() {
 	// if in release mode, use mysql database connection - otherwise sqlite is used with a local db file
 	var err error
 	if gin.Mode() == gin.ReleaseMode {
-		host := "db.cilense.co"
-		port := 3306
+		// table name & user name are both 'cilense' - release version on my own remote database
+		host, port := "db.justin.ooo", 3306
 		pw := os.Getenv("DATABASE_PASSWORD")
 		dsn := fmt.Sprintf("cilense:%s@tcp(%s:%d)/cilense?charset=utf8mb4&parseTime=True&loc=Local", pw, host, port)
 		DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
