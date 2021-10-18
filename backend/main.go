@@ -17,8 +17,10 @@ func main() {
 	// initialize psuedo-random library with seed
 	rand.Seed(time.Now().UnixNano())
 
-	// connect to database and run goroutine to process message channel
+	// initialize database connection
 	config.InitDatabase()
+
+	// run goroutine to process message channel
 	go chat.MessageSender()
 
 	// configure gin router with cors middleware
