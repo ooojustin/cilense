@@ -1,6 +1,9 @@
 package config
 
 import (
+	"fmt"
+	"os"
+
 	"cilense.co/models"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
@@ -16,7 +19,10 @@ func InitDatabase() {
 	// if in release mode, use mysql database connection - otherwise sqlite is used with a local db file
 	var err error
 	if gin.Mode() == gin.ReleaseMode {
-		dsn := "cilense:Qpmpv$fWv3PR6P@tcp(db.cilense.co:3306)/cilense?charset=utf8mb4&parseTime=True&loc=Local"
+		host := "db.cilense.co"
+		port := 3306
+		pw := os.Getenv("DATABASE_PASSWORD")
+		dsn := fmt.Sprintf("cilense:%s@tcp(%s:%d)/cilense?charset=utf8mb4&parseTime=True&loc=Local", pw, host, port)
 		DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	} else {
 		DB, err = gorm.Open(sqlite.Open("gorm.db"), &gorm.Config{})

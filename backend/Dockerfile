@@ -1,5 +1,6 @@
 FROM golang:alpine
 
+ENV DATABASE_PASSWORD=pw
 ENV GIN_MODE=release
 
 RUN apk add build-base
