@@ -16,7 +16,7 @@ func WebSocketHandler(w http.ResponseWriter, r *http.Request) {
 
 	conn, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		fmt.Println("Failed to set websocket upgrade: %+v", err)
+		fmt.Printf("Failed to set websocket upgrade: %v\n", err)
 		return
 	}
 
